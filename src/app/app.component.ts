@@ -1,15 +1,43 @@
-import { Component } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {Observable} from "rxjs";
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet,HttpClientModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+@Injectable({
+  providedIn: 'root',
+})
 export class AppComponent {
+
+
+  private apiUrl = 'https://localhost:7246/WeatherForecast'; // Replace with your API endpoint
+  private _http : HttpClient ;
+  constructor( http: HttpClient) {
+    this._http = http;
+  }
+
+  ngOnInit(): void {
+    this.getData().subscribe((result) => {
+        console.log(result);
+        // Do something with the data
+      });
+    // this.getData();
+  }
+  //
+  // @ts-ignore
+  // http : HttpClient = new HttpClient();
+  getData(): Observable<any> {
+    return this._http.get<any>(this.apiUrl);
+  }
+
   tempdoors: { prize: string, revealed: boolean, imagePath: string }[] = [
     { prize: 'Goat', revealed: false, imagePath: '../assets/montyhall.png' },
     { prize: 'Goat', revealed: false, imagePath: 'assets/montyhall.png' },
@@ -48,6 +76,11 @@ export class AppComponent {
   showSwitchButton = false;
 
   pickDoor(index: number): void {
+
+    // this.getData().subscribe((result) => {
+    //   console.log(result);
+    //   // Do something with the data
+    // });
     this.doors = this.shuffleArray();
     if (this.selectedDoor === null) {
       this.selectedDoor = index;
