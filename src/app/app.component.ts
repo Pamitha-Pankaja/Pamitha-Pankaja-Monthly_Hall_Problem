@@ -20,6 +20,8 @@ export class AppComponent {
 
   private apiUrl = 'https://localhost:7246/WeatherForecast'; // Replace with your API endpoint
   private _http : HttpClient ;
+
+
   constructor( http: HttpClient) {
     this._http = http;
   }
@@ -74,7 +76,10 @@ export class AppComponent {
   revealedGoatDoor: number | null = null;
   instructionMessage = 'Pick a Door!';
   showSwitchButton = false;
+  showPlayAgainButton = false;
 
+  totalSwitches = 0;
+  totalStays = 0
   pickDoor(index: number): void {
 
     // this.getData().subscribe((result) => {
@@ -119,6 +124,51 @@ export class AppComponent {
         door.revealed = true;
       });
       this.showSwitchButton = false;
+      this.showPlayAgainButton = true;
+
+      switch (finalChoice) {
+        case 'Switched':
+          this.totalSwitches++;
+          break;
+        case 'Stayed':
+          this.totalStays++;
+          break;
+        default:
+          break;
+      }
+
     }
+
   }
+
+
+  resetGame(): void {
+    this.selectedDoor = null;
+    this.revealedGoatDoor = null;
+    this.instructionMessage = 'Pick a Door!';
+    this.showSwitchButton = false;
+
+    // Resetting the revealed state for each door
+    this.doors.forEach(door => door.revealed = false);
+
+    // Hide Play Again button on game reset
+    this.showPlayAgainButton = false;
+
+
+    // this.totalSwitches = 0;
+    // this.totalStays = 0;
+    // Reset tempdoors if needed
+    this.tempdoors = [
+      { prize: 'Goat', revealed: false, imagePath: '../assets/montyhall.png' },
+      { prize: 'Goat', revealed: false, imagePath: 'assets/montyhall.png' },
+      { prize: 'Car', revealed: false, imagePath: 'assets/car.jpg' }
+    ];
+  }
+
 }
+
+
+
+
+
+

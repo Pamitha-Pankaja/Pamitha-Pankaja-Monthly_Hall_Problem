@@ -438,9 +438,6 @@
   <div class="doors">
     <div class="door" (click)="pickDoor(0)">
       Door 1
-<!--      <h3  class="name" [hidden]="false">Door 1</h3>-->
-<!--      <h3  class="object" [hidden]="true">🐐</h3>-->
-<!--      <img class="goat" [src]="'assets/montyhall.png'" alt="Goat Image" [hidden]="false"/>-->
       <img class="goat" *ngIf="doors[0].revealed" [src]="doors[0].imagePath" alt="Goat Image" />
     </div>
     <div class="door" (click)="pickDoor(1)">
@@ -459,10 +456,18 @@
       <button (click)="switchDoor(true)">Switch</button>
       <button (click)="switchDoor(false)">Stay</button>
     </div>
+    <button *ngIf="showPlayAgainButton" (click)="resetGame()">Play Again</button>
+
+    <!-- Display total switches and stays -->
+    <div *ngIf="totalSwitches !== null && totalStays !== null">
+      <p>Total Switches: {{ totalSwitches }}</p>
+      <p>Total Stays: {{ totalStays }}</p>
+    </div>
   </div>
 </main>
 </body>
 </html>
+
 
 
 
