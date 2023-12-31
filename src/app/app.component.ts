@@ -108,37 +108,33 @@ export class AppComponent {
     }
   }
 
+
+
   switchDoor(switchDoor: boolean): void {
     if (this.selectedDoor !== null && this.revealedGoatDoor !== null) {
-      let finalChoice = switchDoor ? 'Switched' : 'Stayed';
-      const remainingDoor = [0, 1, 2].filter(door => door !== this.selectedDoor && door !== this.revealedGoatDoor)[0];
+      const remainingDoorIndexes = [0, 1, 2].filter(door => door !== this.selectedDoor && door !== this.revealedGoatDoor);
+      const remainingDoor = switchDoor ? remainingDoorIndexes[0] : this.selectedDoor;
 
       if (this.doors[remainingDoor].prize === 'Car') {
-        // this.doors[remainingDoor].revealed = true;
+        const finalChoice = switchDoor ? 'Switched' : 'Stayed';
         this.instructionMessage = `Congratulations! You ${finalChoice} and won a car!`;
       } else {
-        // this.doors[remainingDoor].revealed = true;
+        const finalChoice = switchDoor ? 'Switched' : 'Stayed';
         this.instructionMessage = `Sorry! You ${finalChoice} and got a goat!`;
       }
+
       this.doors.forEach((door, i) => {
         door.revealed = true;
       });
       this.showSwitchButton = false;
       this.showPlayAgainButton = true;
 
-      switch (finalChoice) {
-        case 'Switched':
-          this.totalSwitches++;
-          break;
-        case 'Stayed':
-          this.totalStays++;
-          break;
-        default:
-          break;
+      if (switchDoor) {
+        this.totalSwitches++;
+      } else {
+        this.totalStays++;
       }
-
     }
-
   }
 
 
